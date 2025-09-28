@@ -36,6 +36,9 @@
 		]
 	},
 	"autoload": {
-        "classmap": ["core/", "app/"]
+		"classmap": ["core/", "app/"]
+	},
+	"extra": {
+		"google/apiclient-services": ["Drive"]
 	}
 }
