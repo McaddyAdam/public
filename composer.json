@@ -1,0 +1,7 @@
+{
+  "name": "wpmudev/public-stub",
+  "description": "Stub composer.json created to allow composer commands in public folder.",
+  "type": "project",
+  "require": {
+  }
+}
