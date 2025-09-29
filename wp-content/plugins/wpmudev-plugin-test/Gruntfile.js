@@ -95,6 +95,17 @@ module.exports = function (grunt) {
 			},
 		},
 
+		// Run shell commands such as Composer
+		shell: {
+			composer: {
+				command: 'composer install --no-dev --optimize-autoloader',
+				options: {
+					stdout: true,
+					stderr: true,
+				},
+			},
+		},
+
 	})
 
 	grunt.loadNpmTasks('grunt-search')
@@ -109,6 +120,8 @@ module.exports = function (grunt) {
 	})
 
 	grunt.registerTask('build', [
+		// Ensure PHP dependencies are installed before building assets
+		'shell:composer',
 		'checktextdomain',
 		'copy:pro',
 		'compress:pro',
