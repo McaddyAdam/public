@@ -42,7 +42,7 @@ Testing and CI
 - PHPUnit config: `phpunit.xml.dist` is present. Tests live under `tests/`. Run phpunit from plugin root (ensure composer dev deps installed).
 - Linting/standards: `phpcs.ruleset.xml` exists. Follow WordPress Coding Standards.
 
-What an AI agent should do first on any change
+What i did first on any change
 1. Read `core/class-loader.php` to see how new services must be registered.
 2. If changing JS, inspect the corresponding `assets/js/*.asset.php` and `webpack.config.js` to keep dependencies/externals in sync (avoid bundling React if the enqueue expects `wp-element`).
 3. When adding REST endpoints match the existing namespace (`Endpoints\V1`) and register them from the Loader `init()` flow.
