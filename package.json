@@ -1,0 +1,8 @@
+{
+  "name": "wpmudev-public-wrapper",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix ./wp-content/plugins/wpmudev-plugin-test run build"
+  }
+}

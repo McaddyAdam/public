@@ -93,6 +93,20 @@ final class Loader extends Base {
 	 */
 	private function init() {
 		App\Admin_Pages\Google_Drive::instance()->init();
+
+		// The Posts_Maintenance class may not be available if Composer's
+		// autoloader (classmap) wasn't regenerated. Guard and require the
+		// file directly to avoid a fatal "class not found" error.
+		if ( ! class_exists( '\\WPMUDEV\\PluginTest\\App\\Admin_Pages\\Posts_Maintenance' ) ) {
+			$possible = WPMUDEV_PLUGINTEST_DIR . 'app/admin-pages/class-posts-maintenance.php';
+			if ( file_exists( $possible ) ) {
+				require_once $possible;
+			}
+		}
+
+		App\Admin_Pages\Posts_Maintenance::instance()->init();
 		Endpoints\V1\Drive_API::instance()->init();
+
+
 	}
 }

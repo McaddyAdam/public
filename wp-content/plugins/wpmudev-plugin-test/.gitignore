@@ -1,0 +1,12 @@
+node_modules/
+vendor/
+build/
+.vscode/
+.DS_Store
+npm-debug.log*
+.env
+coverage/
+/.idea/
+*.log
+*.zip
+*.tgz

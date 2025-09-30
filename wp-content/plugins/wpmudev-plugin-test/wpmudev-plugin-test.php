@@ -5,7 +5,7 @@
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Version:           0.1.0
- * Author:            PLEASE ADD YOU FULL NAME HERE
+ * Author:            ADAM ADEBESIN
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       wpmudev-plugin-test
@@ -102,6 +102,11 @@ add_action(
 	'init',
 	function () {
 		WPMUDEV_PluginTest::get_instance()->load();
+
+		// Register CLI commands when running under WP-CLI
+		if ( defined( 'WP_CLI' ) && WP_CLI && file_exists( __DIR__ . '/app/cli/register-cli.php' ) ) {
+			require_once __DIR__ . '/app/cli/register-cli.php';
+		}
 	},
 	9
 );

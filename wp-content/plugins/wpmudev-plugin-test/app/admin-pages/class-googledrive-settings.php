@@ -126,7 +126,7 @@ class Google_Drive extends Base {
 		$src          = WPMUDEV_PLUGINTEST_ASSETS_URL . '/js/drivetestpage.min.js';
 		$style_src    = WPMUDEV_PLUGINTEST_ASSETS_URL . '/css/drivetestpage.min.css';
 		$dependencies = ! empty( $this->script_data( 'dependencies' ) )
-			? $this->script_data( 'dependencies' )
+			? (array) $this->script_data( 'dependencies' )
 			: array(
 				'react',
 				'wp-element',
@@ -134,6 +134,16 @@ class Google_Drive extends Base {
 				'wp-is-shallow-equal',
 				'wp-polyfill',
 			);
+
+		// Ensure essential WordPress runtime dependencies are present so the compiled bundle
+		// can rely on them without requiring a rebuild. This avoids shipping node_modules
+		// and keeps the ZIP small while allowing runtime to supply these scripts.
+		$required_runtime_deps = array( 'wp-element', 'wp-i18n', 'wp-components' );
+		foreach ( $required_runtime_deps as $rdep ) {
+			if ( ! in_array( $rdep, $dependencies, true ) ) {
+				$dependencies[] = $rdep;
+			}
+		}
 
 		$this->page_scripts[ $handle ] = array(
 			'src'       => $src,
@@ -205,10 +215,19 @@ class Google_Drive extends Base {
 	public function enqueue_assets() {
 		if ( ! empty( $this->page_scripts ) ) {
 			foreach ( $this->page_scripts as $handle => $page_script ) {
+				// Ensure React/ReactDOM are provided by WordPress where possible.
+				$deps = $page_script['deps'];
+				// Replace react/react-dom with WP element alias if present
+				foreach ( $deps as $i => $d ) {
+					if ( 'react' === $d || 'react-dom' === $d ) {
+						$deps[ $i ] = 'wp-element';
+					}
+				}
+
 				wp_register_script(
 					$handle,
 					$page_script['src'],
-					$page_script['deps'],
+					$deps,
 					$page_script['ver'],
 					$page_script['strategy']
 				);
@@ -220,7 +239,18 @@ class Google_Drive extends Base {
 				wp_enqueue_script( $handle );
 
 				if ( ! empty( $page_script['style_src'] ) ) {
+					// Enqueue the plugin's CSS (which assumes shared-ui CSS is loaded separately)
 					wp_enqueue_style( $handle, $page_script['style_src'], array(), $this->assets_version );
+				}
+
+				// Attempt to enqueue shared-ui assets separately if available in node_modules
+				$shared_ui_css = WPMUDEV_PLUGINTEST_DIR . 'node_modules/@wpmudev/shared-ui/dist/shared-ui.css';
+				$shared_ui_js  = WPMUDEV_PLUGINTEST_DIR . 'node_modules/@wpmudev/shared-ui/dist/shared-ui.js';
+				if ( file_exists( $shared_ui_css ) ) {
+					wp_enqueue_style( 'wpmudev-shared-ui', WPMUDEV_PLUGINTEST_URL . '/node_modules/@wpmudev/shared-ui/dist/shared-ui.css', array(), WPMUDEV_PLUGINTEST_SUI_VERSION );
+				}
+				if ( file_exists( $shared_ui_js ) ) {
+					wp_enqueue_script( 'wpmudev-shared-ui', WPMUDEV_PLUGINTEST_URL . '/node_modules/@wpmudev/shared-ui/dist/shared-ui.js', array( 'wp-element' ), WPMUDEV_PLUGINTEST_SUI_VERSION, true );
 				}
 			}
 		}

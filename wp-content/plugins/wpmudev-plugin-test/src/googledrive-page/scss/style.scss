@@ -2,8 +2,9 @@
 $sui-font-path: '~@wpmudev/shared-ui/dist/fonts/';
 $sui-image-path: '~@wpmudev/shared-ui/dist/images/';
 
-// Share UI styles
-@import "@wpmudev/shared-ui";
+// NOTE: We avoid importing the entire @wpmudev/shared-ui stylesheet here so the
+// shared UI CSS isn't bundled into the plugin. The shared UI styles will be
+// enqueued separately at runtime by the plugin PHP which keeps the plugin zip small.
 
 .sui-box-body {
     .components-base-control {

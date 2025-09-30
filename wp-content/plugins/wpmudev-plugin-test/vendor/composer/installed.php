@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'wpmudev/plugintest',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'c46fa70af463418ea9e8854805ad69d881d195e3',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'f52ec7bfd70fe4ce533b19f424da667b19d56190',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -197,9 +197,9 @@
             'dev_requirement' => false,
         ),
         'wpmudev/plugintest' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'c46fa70af463418ea9e8854805ad69d881d195e3',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'f52ec7bfd70fe4ce533b19f424da667b19d56190',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
